@@ -1,0 +1,100 @@
+.forboth {
+  padding: 120px 72px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.forboth-card {
+  padding: 56px 48px;
+  border: 1.5px solid rgba(0,0,0,0.08);
+  border-radius: 20px;
+  background: #fafafa;
+}
+
+.forboth-dark {
+  background: #0f0d0a;
+  border-color: rgba(255,255,255,0.06);
+}
+
+.forboth-card .section-eyebrow {
+  margin-bottom: 16px;
+}
+
+.forboth-card h2 {
+  font-size: 1.9rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  margin-bottom: 14px;
+}
+
+.forboth-dark h2 {
+  color: #fff;
+}
+
+.forboth-desc {
+  color: #777;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.forboth-dark .forboth-desc {
+  color: rgba(255,255,255,0.4);
+}
+
+.forboth-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.forboth-card ul li {
+  color: #444;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.forboth-dark ul li {
+  color: rgba(255,255,255,0.6);
+}
+
+.forboth-card ul li span {
+  color: #C9A84C;
+  font-weight: 700;
+}
+
+.forboth-btn {
+  display: inline-block;
+  background: #1a1a1a;
+  color: #fff;
+  padding: 14px 30px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.forboth-btn:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.forboth-btn-gold {
+  background: #C9A84C;
+  color: #1a1a1a;
+}
+
+.forboth-btn-gold:hover {
+  background: #b8943d;
+}
