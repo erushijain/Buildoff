@@ -1,38 +1,36 @@
-/* ──────────────────────────────────────────
-   Scroll wrapper — sets the scroll distance
-   400vh = how long the sticky effect lasts
-────────────────────────────────────────── */
+/* ═══════════════════════════════════════════
+   HowItWorks.css  — white theme
+   ═══════════════════════════════════════════ */
+
 .how-scroll-wrapper {
-  position: relative;
-  height: 400vh;
-  background: #0f0d0a;
+  height: 320vh;
 }
 
-/* ──────────────────────────────────────────
-   Sticky container — stays fixed in viewport
-────────────────────────────────────────── */
 .how-sticky {
   position: sticky;
   top: 0;
-  height: 100vh;
   width: 100%;
-  display: flex;
-  align-items: center;
+  height: 100vh;
   overflow: hidden;
-  background: #0f0d0a;
+
+  /* ── Premium subtle background ── */
+  background:
+    /* fine dot grid */
+    radial-gradient(circle, rgba(156,122,64,0.13) 1px, transparent 1px),
+    /* warm radial glow top-right */
+    radial-gradient(ellipse 70% 60% at 80% -10%, rgba(201,168,76,0.07) 0%, transparent 70%),
+    /* soft warm glow bottom-left */
+    radial-gradient(ellipse 55% 50% at -10% 110%, rgba(201,168,76,0.05) 0%, transparent 65%),
+    /* base white */
+    #fdfcf9;
+  background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%;
 }
 
-/* ──────────────────────────────────────────
-   Video block
-────────────────────────────────────────── */
+/* ── Video ─────────────────────────────────── */
 .how-video-wrap {
   position: absolute;
   left: 0;
-  top: 50%;
-  transform: translateY(-50%);
   overflow: hidden;
-  flex-shrink: 0;
-  /* width & height driven by framer-motion */
 }
 
 .how-video {
@@ -45,230 +43,226 @@
 .how-video-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(15,13,10,0.7) 0%,
-    rgba(15,13,10,0.2) 100%
-  );
+  background: #fff;
   pointer-events: none;
 }
 
-/* ──────────────────────────────────────────
-   Centred label shown on fullscreen video
-────────────────────────────────────────── */
+/* Floating badge (fades out on scroll) */
+.how-video-badge {
+  position: absolute;
+  top: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Fullscreen label */
 .how-video-label {
   position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  padding: 0 48px;
+  width: 78%;
   pointer-events: none;
-  z-index: 2;
 }
 
 .how-video-label-tag {
   display: inline-block;
-  font-size: 0.7rem;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #C9A84C;
-  border: 1px solid rgba(201,168,76,0.4);
-  background: rgba(201,168,76,0.08);
-  padding: 6px 16px;
-  border-radius: 4px;
-  margin-bottom: 24px;
-}
-
-.how-video-label h2 {
-  font-size: 4.5rem;
-  font-weight: 900;
-  color: #fff;
-  line-height: 1.05;
-  letter-spacing: -2px;
-  margin-bottom: 18px;
-}
-
-.how-video-label p {
-  color: rgba(255,255,255,0.6);
-  font-size: 1rem;
-  line-height: 1.7;
-  max-width: 420px;
-}
-
-/* ──────────────────────────────────────────
-   Right text panel
-────────────────────────────────────────── */
-.how-text-panel {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 46vw;
-  padding: 48px 56px 48px 40px;
-  overflow-y: auto;
-  max-height: 100vh;
-  /* opacity & x driven by framer-motion */
-}
-
-/* scrollbar styling */
-.how-text-panel::-webkit-scrollbar { width: 4px; }
-.how-text-panel::-webkit-scrollbar-track { background: transparent; }
-.how-text-panel::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 4px; }
-
-.how-label-tag {
-  display: inline-block;
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: #C9A84C;
-  border: 1px solid rgba(201,168,76,0.35);
-  background: rgba(201,168,76,0.06);
-  padding: 6px 14px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-}
-
-.how-text-heading {
-  font-size: 2.6rem;
-  font-weight: 900;
-  color: #fff;
-  line-height: 1.1;
-  letter-spacing: -1.5px;
+  color: #9c7a40;
+  background: rgba(156, 122, 64, 0.1);
+  padding: 4px 14px;
+  border-radius: 20px;
   margin-bottom: 14px;
 }
 
-.how-text-sub {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.92rem;
-  line-height: 1.75;
-  margin-bottom: 40px;
-  max-width: 360px;
+.how-video-label h2 {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 800;
+  margin: 0 0 14px;
+  color: #1a1308;
+  line-height: 1.06;
+  letter-spacing: -0.03em;
 }
 
-/* ──────────────────────────────────────────
-   Steps
-────────────────────────────────────────── */
+.how-video-label p {
+  font-size: 1rem;
+  color: rgba(26, 19, 8, 0.55);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Text panel ─────────────────────────────── */
+.how-text-panel {
+  position: absolute;
+  left: calc(48vw + 28px);
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-right: 44px;
+}
+.how-text-panel::-webkit-scrollbar { display: none; }
+
+.how-text-inner {
+  width: 100%;
+  padding-top: 88px;
+  padding-bottom: 40px;
+}
+
+/* Eyebrow tag */
+.how-label-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #9c7a40;
+  margin-bottom: 16px;
+}
+
+.how-label-tag::before {
+  content: '';
+  display: inline-block;
+  width: 22px;
+  height: 1.5px;
+  background: #9c7a40;
+  border-radius: 2px;
+}
+
+.how-text-heading {
+  font-size: clamp(1.6rem, 2.2vw, 2.4rem);
+  font-weight: 800;
+  color: #111111;
+  line-height: 1.1;
+  margin: 0 0 10px;
+  letter-spacing: -0.03em;
+}
+
+.how-text-heading em {
+  font-style: italic;
+  color: #9c7a40;
+}
+
+.how-text-sub {
+  font-size: 0.875rem;
+  color: rgba(17, 17, 17, 0.45);
+  line-height: 1.7;
+  margin: 0 0 32px;
+  max-width: 380px;
+}
+
+/* ── Steps ──────────────────────────────────── */
 .how-steps {
   display: flex;
   flex-direction: column;
 }
 
 .how-step {
-  display: grid;
-  grid-template-columns: 56px 1fr;
-  gap: 24px;
-  align-items: start;
-  cursor: default;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.25s, border-color 0.25s;
+  margin-bottom: 2px;
 }
 
+.how-step:hover {
+  background: rgba(156, 122, 64, 0.05);
+  border-color: rgba(156, 122, 64, 0.18);
+}
+
+/* Left: number + connector */
 .how-step-left {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .how-step-num {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  background: #1e1b16;
-  border: 1px solid rgba(201,168,76,0.25);
-  color: #C9A84C;
-  font-size: 0.78rem;
-  font-weight: 800;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(156, 122, 64, 0.25);
+  background: rgba(156, 122, 64, 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.5px;
+  font-size: 11px;
+  font-weight: 800;
+  color: rgba(156, 122, 64, 0.55);
+  letter-spacing: 0.04em;
   flex-shrink: 0;
-  transition: background 0.25s, color 0.25s, transform 0.25s;
+  transition: border-color 0.25s, color 0.25s, background 0.25s, box-shadow 0.25s;
 }
 
 .how-step:hover .how-step-num {
-  background: #C9A84C;
-  color: #0f0d0a;
-  transform: scale(1.08);
+  border-color: #9c7a40;
+  color: #9c7a40;
+  background: rgba(156, 122, 64, 0.1);
+  box-shadow: 0 0 0 4px rgba(156, 122, 64, 0.1);
 }
 
-/* dashed connector */
 .how-step-connector {
-  width: 0;
+  width: 1px;
   flex: 1;
-  min-height: 40px;
-  margin: 8px 0;
-  border-left: 2px dashed rgba(201,168,76,0.25);
+  min-height: 24px;
+  background: linear-gradient(to bottom, rgba(156, 122, 64, 0.2), rgba(156, 122, 64, 0.04));
+  margin: 5px 0;
 }
 
+/* Right: content */
 .how-step-body {
-  padding: 2px 0 40px;
+  padding-top: 8px;
+  padding-bottom: 20px;
 }
 
 .how-step-tag {
-  font-size: 0.67rem;
-  font-weight: 700;
-  color: #C9A84C;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   display: block;
-  margin-bottom: 8px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(156, 122, 64, 0.6);
+  margin-bottom: 5px;
 }
 
 .how-step-body h3 {
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 10px;
-  letter-spacing: -0.4px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 7px;
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .how-step-body p {
-  color: rgba(255,255,255,0.5);
-  font-size: 0.9rem;
-  line-height: 1.8;
-  max-width: 340px;
-}
-
-/* ──────────────────────────────────────────
-   Responsive
-────────────────────────────────────────── */
-@media (max-width: 860px) {
-  .how-scroll-wrapper {
-    height: auto;
-  }
-
-  .how-sticky {
-    position: relative;
-    height: auto;
-    flex-direction: column;
-    padding: 80px 24px;
-  }
-
-  .how-video-wrap {
-    position: relative;
-    top: auto;
-    transform: none;
-    width: 100% !important;
-    height: 50vw !important;
-    border-radius: 16px !important;
-    margin-bottom: 40px;
-  }
-
-  .how-text-panel {
-    position: relative;
-    top: auto;
-    transform: none;
-    width: 100%;
-    padding: 0;
-    opacity: 1 !important;
-  }
-
-  .how-video-label h2 {
-    font-size: 2.4rem;
-  }
+  font-size: 0.835rem;
+  color: rgba(17, 17, 17, 0.48);
+  line-height: 1.7;
+  margin: 0;
 }
