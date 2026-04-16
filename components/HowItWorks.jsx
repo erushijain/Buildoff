@@ -1,6 +1,11 @@
 import { useRef } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import heroVideo from '../assets/hero-video.mp4'
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useSpring,
+} from 'framer-motion'
+import howVideo from '../assets/how-video.mp4'
 import '../styles/HowItWorks.css'
 
 const steps = [
@@ -30,112 +35,111 @@ const steps = [
   },
 ]
 
+const TOP_GAP =0
+
 export default function HowItWorks() {
-  // stickyRef wraps the tall scroll-distance div
-  const stickyRef = useRef(null)
+  const wrapperRef = useRef(null)
 
   const { scrollYProgress } = useScroll({
-    target: stickyRef,
+    target: wrapperRef,
     offset: ['start start', 'end end'],
   })
 
-  // Phase 0→0.35  : video fills screen (fullscreen intro)
-  // Phase 0.35→0.7: video shrinks + slides left, text slides in from right
-  // Phase 0.7→1   : layout fully settled, steps visible
+  const springConfig = { stiffness: 120, damping: 20, mass: 0.75 }
 
-  // Video width: 100vw → 50vw
-  const videoWidth = useTransform(scrollYProgress, [0.3, 0.65], ['100vw', '50vw'])
-  // Video height: 100vh → 75vh
-  const videoHeight = useTransform(scrollYProgress, [0.3, 0.65], ['100vh', '75vh'])
-  // Video border radius: 0 → 20px
-  const videoRadius = useTransform(scrollYProgress, [0.3, 0.65], ['0px', '20px'])
-  // Video x: centre → left edge
-  const videoX = useTransform(scrollYProgress, [0.3, 0.65], ['0%', '0%'])
+  const rawVideoWidth = useTransform(scrollYProgress, [0.0, 0.22], [100, 48])
+  const rawVideoTop   = useTransform(scrollYProgress, [0.0, 0.22], [0, TOP_GAP])
+  const rawRadius     = useTransform(scrollYProgress, [0.0, 0.22], [0, 20])
+  const rawTextX      = useTransform(scrollYProgress, [0.04, 0.22], [60, 0])
+  const rawTextOp     = useTransform(scrollYProgress, [0.04, 0.20], [0, 1])
+  const rawOverlay    = useTransform(scrollYProgress, [0, 0.18], [0, 0.06])
+  const rawLabelOp    = useTransform(scrollYProgress, [0, 0.05, 0.16], [1, 1, 0])
+  const rawLabelY     = useTransform(scrollYProgress, [0, 0.16], [0, -20])
+  const rawBadgeOp    = useTransform(scrollYProgress, [0, 0.10], [1, 0])
 
-  // Text panel: slides in from right
-  const textX = useTransform(scrollYProgress, [0.35, 0.7], ['60px', '0px'])
-  const textOpacity = useTransform(scrollYProgress, [0.35, 0.65], [0, 1])
+  const videoWidth = useSpring(rawVideoWidth, springConfig)
+  const videoTop   = useSpring(rawVideoTop,   springConfig)
+  const radius     = useSpring(rawRadius,     springConfig)
+  const textX      = useSpring(rawTextX,      springConfig)
+  const textOp     = useSpring(rawTextOp,     springConfig)
+  const overlayOp  = useSpring(rawOverlay,    springConfig)
+  const labelOp    = useSpring(rawLabelOp,    springConfig)
+  const labelY     = useSpring(rawLabelY,     springConfig)
 
-  // Dark overlay on video fades out as it shrinks
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.3, 0.65], [0.6, 0.6, 0.15])
-
-  // Fullscreen label fades out early
-  const labelOpacity = useTransform(scrollYProgress, [0, 0.2, 0.32], [1, 1, 0])
-  const labelY = useTransform(scrollYProgress, [0, 0.32], ['0px', '-30px'])
+  const videoWidthCss  = useTransform(videoWidth, v => `${v}vw`)
+  const videoHeightCss = useTransform(videoTop,   t => `calc(100vh - ${t * 2}px)`)
+  const radiusCss      = useTransform(radius,     v => `${v}px`)
+  const videoTopCss    = useTransform(videoTop,   v => `${v}px`)
 
   return (
-    // Tall wrapper = scroll distance. 400vh gives a smooth slow scroll effect.
-    <div ref={stickyRef} className="how-scroll-wrapper">
-
-      {/* Sticky container that stays in view during scroll */}
+    <div ref={wrapperRef} className="how-scroll-wrapper" id="how-it-works">
       <div className="how-sticky">
 
-        {/* ── Video block ── */}
+        {/* ── Video ── */}
         <motion.div
           className="how-video-wrap"
           style={{
-            width: videoWidth,
-            height: videoHeight,
-            borderRadius: videoRadius,
+            width: videoWidthCss,
+            height: videoHeightCss,
+            borderRadius: radiusCss,
+            top: videoTopCss,
           }}
         >
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="how-video"
-          >
-            <source src={heroVideo} type="video/mp4" />
+          <video autoPlay muted loop playsInline className="how-video">
+            <source src={howVideo} type="video/mp4" />
           </video>
 
-          {/* Dark overlay */}
-          <motion.div
-            className="how-video-overlay"
-            style={{ opacity: overlayOpacity }}
-          />
+          <motion.div className="how-video-overlay" style={{ opacity: overlayOp }} />
 
-          {/* Centred label shown while video is fullscreen */}
           <motion.div
             className="how-video-label"
-            style={{ opacity: labelOpacity, y: labelY }}
+            style={{ opacity: labelOp, y: labelY }}
           >
             <span className="how-video-label-tag">The Process</span>
             <h2>How it actually works.</h2>
             <p>No fluff. Four steps from zero to your first paid project.</p>
           </motion.div>
+
+          <motion.div className="how-video-badge" style={{ opacity: rawBadgeOp }}>
+            The Process
+          </motion.div>
         </motion.div>
 
-        {/* ── Text panel (right side) ── */}
+        {/* ── Text panel ── */}
         <motion.div
           className="how-text-panel"
-          style={{ opacity: textOpacity, x: textX }}
+          style={{ opacity: textOp, x: textX }}
         >
-          <span className="how-label-tag">The Process</span>
-          <h2 className="how-text-heading">How it actually works.</h2>
-          <p className="how-text-sub">No fluff. Four steps from zero to your first paid freelance project.</p>
+          <div className="how-text-inner">
+            <span className="how-label-tag">The Process</span>
+            <h2 className="how-text-heading">How it <em>actually</em> works.</h2>
+            <p className="how-text-sub">
+              No fluff. Four steps from zero to your first paid freelance project.
+            </p>
 
-          <div className="how-steps">
-            {steps.map((step, i) => (
-              <motion.div
-                className="how-step"
-                key={i}
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ delay: i * 0.1, duration: 0.5, ease: 'easeOut' }}
-              >
-                <div className="how-step-left">
-                  <div className="how-step-num">{step.num}</div>
-                  {i < steps.length - 1 && <div className="how-step-connector" />}
-                </div>
-                <div className="how-step-body">
-                  <span className="how-step-tag">{step.tag}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.body}</p>
-                </div>
-              </motion.div>
-            ))}
+            <div className="how-steps">
+              {steps.map((step, i) => (
+                <motion.div
+                  className="how-step"
+                  key={i}
+                  initial={{ opacity: 0, x: 28 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  whileHover={{ x: 6 }}
+                >
+                  <div className="how-step-left">
+                    <div className="how-step-num">{step.num}</div>
+                    {i < steps.length - 1 && <div className="how-step-connector" />}
+                  </div>
+                  <div className="how-step-body">
+                    <span className="how-step-tag">{step.tag}</span>
+                    <h3>{step.title}</h3>
+                    <p>{step.body}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
